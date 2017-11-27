@@ -1,10 +1,7 @@
-
 F_bit = 23
 E_bit = 8
-
 in_name = 'add_f1'
 out_name = 'sub_shift'
-
 #index = '[2*F_bit+1:F_bit+1]'
 index = ''
 #该代码用于生成并行优先编码器，用于浮点型减法运算对齐
@@ -22,8 +19,8 @@ for i in range(0,F_bit+1):
     for j in range(i,F_bit):
         a += "x"
     f.write(a)
-    f.write(": %s=%d'h%d"%(out_name,E_bit-1,i))
+    f.write(": %s=%d'd%d"%(out_name,E_bit-1,i))
     f.write(";\n")
-f.write("\t\tdefault: %s = %d'h0;\n"%(out_name,E_bit-1))
+f.write("\t\tdefault: %s = %d'd0;\n"%(out_name,E_bit-1))
 f.write("\tendcase\nend\nendmodule\n\n")
 f.close()
