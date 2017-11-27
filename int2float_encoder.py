@@ -19,7 +19,7 @@ for i in range(0,INT_WIDTH):
     for j in range(i,INT_WIDTH-1):
         a += "x"
     f.write(a)
-    f.write(": %s=%d'd%d"%(out_name,E_bit-1,i))
+    f.write(": %s=%d'd%d"%(out_name,E_bit-1,INT_WIDTH-i-1))
     f.write(";\n")
 f.write("\t\tdefault: %s = %d'd0;\n"%(out_name,E_bit-1))
 f.write("\tendcase\nend\nendmodule\n\n")
