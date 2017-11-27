@@ -113,31 +113,31 @@ end
 //使用casex语句极大限度的并行化，使用verilog for循环生成门延时非常恐怖
 always @(add_f1) begin
 	casex(add_f1[2*F_bit+1:F_bit+1])
-		24'b1xxxxxxxxxxxxxxxxxxxxxxx: sub_shift=7'h0;
-		24'b01xxxxxxxxxxxxxxxxxxxxxx: sub_shift=7'h1;
-		24'b001xxxxxxxxxxxxxxxxxxxxx: sub_shift=7'h2;
-		24'b0001xxxxxxxxxxxxxxxxxxxx: sub_shift=7'h3;
-		24'b00001xxxxxxxxxxxxxxxxxxx: sub_shift=7'h4;
-		24'b000001xxxxxxxxxxxxxxxxxx: sub_shift=7'h5;
-		24'b0000001xxxxxxxxxxxxxxxxx: sub_shift=7'h6;
-		24'b00000001xxxxxxxxxxxxxxxx: sub_shift=7'h7;
-		24'b000000001xxxxxxxxxxxxxxx: sub_shift=7'h8;
-		24'b0000000001xxxxxxxxxxxxxx: sub_shift=7'h9;
-		24'b00000000001xxxxxxxxxxxxx: sub_shift=7'h10;
-		24'b000000000001xxxxxxxxxxxx: sub_shift=7'h11;
-		24'b0000000000001xxxxxxxxxxx: sub_shift=7'h12;
-		24'b00000000000001xxxxxxxxxx: sub_shift=7'h13;
-		24'b000000000000001xxxxxxxxx: sub_shift=7'h14;
-		24'b0000000000000001xxxxxxxx: sub_shift=7'h15;
-		24'b00000000000000001xxxxxxx: sub_shift=7'h16;
-		24'b000000000000000001xxxxxx: sub_shift=7'h17;
-		24'b0000000000000000001xxxxx: sub_shift=7'h18;
-		24'b00000000000000000001xxxx: sub_shift=7'h19;
-		24'b000000000000000000001xxx: sub_shift=7'h20;
-		24'b0000000000000000000001xx: sub_shift=7'h21;
-		24'b00000000000000000000001x: sub_shift=7'h22;
-		24'b000000000000000000000001: sub_shift=7'h23;
-		default: sub_shift = 7'h24;
+		24'b1xxxxxxxxxxxxxxxxxxxxxxx: sub_shift=7'd0;
+		24'b01xxxxxxxxxxxxxxxxxxxxxx: sub_shift=7'd1;
+		24'b001xxxxxxxxxxxxxxxxxxxxx: sub_shift=7'd2;
+		24'b0001xxxxxxxxxxxxxxxxxxxx: sub_shift=7'd3;
+		24'b00001xxxxxxxxxxxxxxxxxxx: sub_shift=7'd4;
+		24'b000001xxxxxxxxxxxxxxxxxx: sub_shift=7'd5;
+		24'b0000001xxxxxxxxxxxxxxxxx: sub_shift=7'd6;
+		24'b00000001xxxxxxxxxxxxxxxx: sub_shift=7'd7;
+		24'b000000001xxxxxxxxxxxxxxx: sub_shift=7'd8;
+		24'b0000000001xxxxxxxxxxxxxx: sub_shift=7'd9;
+		24'b00000000001xxxxxxxxxxxxx: sub_shift=7'd10;
+		24'b000000000001xxxxxxxxxxxx: sub_shift=7'd11;
+		24'b0000000000001xxxxxxxxxxx: sub_shift=7'd12;
+		24'b00000000000001xxxxxxxxxx: sub_shift=7'd13;
+		24'b000000000000001xxxxxxxxx: sub_shift=7'd14;
+		24'b0000000000000001xxxxxxxx: sub_shift=7'd15;
+		24'b00000000000000001xxxxxxx: sub_shift=7'd16;
+		24'b000000000000000001xxxxxx: sub_shift=7'd17;
+		24'b0000000000000000001xxxxx: sub_shift=7'd18;
+		24'b00000000000000000001xxxx: sub_shift=7'd19;
+		24'b000000000000000000001xxx: sub_shift=7'd20;
+		24'b0000000000000000000001xx: sub_shift=7'd21;
+		24'b00000000000000000000001x: sub_shift=7'd22;
+		24'b000000000000000000000001: sub_shift=7'd23;
+		default: sub_shift = 7'd24;
 	endcase
 end
 
