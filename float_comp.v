@@ -1,5 +1,5 @@
 module float_comp(rst_n,clk,float_a,float_b,gt,eq,lt);
-
+//这是一个浮点数比较大小的模块，用于分段线性系数选取
 parameter E_bit = 8,F_bit = 23;
 
 input clk,rst_n;
