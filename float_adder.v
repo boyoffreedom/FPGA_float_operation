@@ -74,13 +74,13 @@ always @(posedge clk or negedge rst_n) begin
 		sub_eq1 <= 0;
 	end
 	else begin
+		sub_eq1 <= 0;
 		if(a_s0 == b_s0) begin		//符号相等，
 			add_f1 <= a_f0 + b_f0;
-			sub_eq1 <= 0;
 		end
 		else begin //符号相异，减法运算
 			add_f1 <= a_f0 - b_f0;
-			if(a_f0 == b_f0) begin
+			if(a_f0 == b_f0) begin		//相减为0，特殊处理
 				sub_eq1 <= 1;
 			end
 		end
