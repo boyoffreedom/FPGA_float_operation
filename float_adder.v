@@ -24,6 +24,7 @@ wire 				  a_s = add_a[E_bit+F_bit];
 wire 				  b_s = add_b[E_bit+F_bit];
 
 reg a_s0,b_s0,add_s1,add_s2;
+reg sub_eq1;
 
 reg[E_bit-1:0] add_e0;					//各级流水线指数暂存
 reg[E_bit-1:0] add_e1;
@@ -70,13 +71,18 @@ always @(posedge clk or negedge rst_n) begin
 		add_e1 <= 0;
 		add_f1 <= 0;
 		add_s1 <= 0;
+		sub_eq1 <= 0;
 	end
 	else begin
 		if(a_s0 == b_s0) begin		//符号相等，
 			add_f1 <= a_f0 + b_f0;
+			sub_eq1 <= 0;
 		end
 		else begin //符号相异，减法运算
 			add_f1 <= a_f0 - b_f0;
+			if(a_f0 == b_f0) begin
+				sub_eq1 <= 1;
+			end
 		end
 		add_s1 <= a_s0;
 		add_e1 <= add_e0;
@@ -91,6 +97,7 @@ always @(posedge clk or negedge rst_n) begin
 		add_s2 <= 0;
 	end
 	else begin
+		add_s2 <= add_s1;
 		if(add_f1[2*F_bit+1]) begin			//最高位为1尾数进位
 			if(add_e2 == E_max) begin		//溢出，全给1
 				add_f2 <= {F_bit{1'b1}};
@@ -102,10 +109,17 @@ always @(posedge clk or negedge rst_n) begin
 			end
 		end
 		else begin
-			add_f2 <= sub_shift_f1[2*F_bit-1:F_bit];//add_f1[2*F_bit-1:F_bit];
-			add_e2 <= add_e1 - (sub_shift-1'b1);//add_e1;
+			if(sub_eq1 == 1) begin			//正负相加等于0，特殊处理
+				add_s2 <= 0;
+				add_e2 <= 0;
+				add_f2 <= 0;
+			end
+			else begin
+				add_f2 <= sub_shift_f1[2*F_bit-1:F_bit];//add_f1[2*F_bit-1:F_bit];
+				add_e2 <= add_e1 - (sub_shift-1'b1);//add_e1;
+			end
 		end
-		add_s2 <= add_s1;
+		
 	end
 end
 
