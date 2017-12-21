@@ -99,8 +99,8 @@ always @(posedge clk or negedge rst_n) begin
 	else begin
 		add_s2 <= add_s1;
 		if(add_f1[2*F_bit+1]) begin			//最高位为1尾数进位
-			if(add_e2 == E_max) begin		//溢出，全给1
-				add_f2 <= {F_bit{1'b1}};
+			if(add_e2 == E_max) begin		//溢出，特殊值Nan
+				add_f2 <= 1;
 				add_e2 <= {E_bit{1'b1}};
 			end
 			else begin							//否则规范化并进位
