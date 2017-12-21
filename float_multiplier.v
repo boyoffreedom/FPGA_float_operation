@@ -1,4 +1,4 @@
-module float_multiplier(clk,rst_n,mul_a,mul_b,out_a);
+module float_timer(clk,rst_n,mul_a,mul_b,out_a);
 
 //bit=s+e+f			s = 1;e = E_bit;f=F_bit;
 //定义参数
@@ -10,7 +10,7 @@ parameter E_add_max = {(E_bit){1'b1}}+E_ref-1;
 
 input wire[E_bit+F_bit:0] mul_a,mul_b;			//符号位1 指数位 E_bit 尾数位F_bit
 output wire[E_bit+F_bit:0] out_a;
-input rst_n,clk;			//com == 0: 加add_a; com == 1: 加内部寄存器
+input rst_n,clk;
 
 assign out_a = {S[2],e2,f2};
 
@@ -44,8 +44,14 @@ always @(posedge clk or negedge rst_n) begin
 	end
 	else begin
 		S <= {S[1:0],S0};			//流水线移位
-		f0 <= mul_a_f*mul_b_f;
-		e0 <= mul_a_e+mul_b_e;
+		if(mul_a_e == {1'b0,{(E_bit){1'b1}}} || mul_b_e == {1'b0,{(E_bit){1'b1}}})begin		//Nan|无穷数判断
+			f0 <= 1;
+			e0 <= {1'b0,{(E_bit){1'b1}}};
+		end
+		else begin
+			f0 <= mul_a_f*mul_b_f;
+			e0 <= mul_a_e+mul_b_e;
+		end
 	end
 end
 
@@ -57,9 +63,9 @@ always @(posedge clk or negedge rst_n)begin
 	end
 	else begin
 		if(e0 > E_ref) begin
-			if(e0 >= E_add_max) begin		//指数上溢，无穷大
-				e1 <= {(E_bit+1){1'b1}};						//指数全赋值1
-				f1 <= {1'b0,{(F_bit+1){1'b1}}};		//尾数最高位赋值0，其余赋值1
+			if(e0 >= E_add_max) begin		//指数上溢，Nan
+				e1 <= {(E_bit+1){1'b1}};	//指数全赋值1
+				f1 <= 1;			//尾数!=0
 			end
 			else begin				//没有溢出
 				e1 <= (e0 - E_ref);
@@ -91,5 +97,3 @@ always @(posedge clk or negedge rst_n)begin
 	end
 end
 endmodule
-
-
