@@ -1,4 +1,4 @@
-module float_timer(clk,rst_n,mul_a,mul_b,out_a);
+module float_multiplier(clk,rst_n,mul_a,mul_b,out_a);
 
 //bit=s+e+f			s = 1;e = E_bit;f=F_bit;
 //定义参数
@@ -69,7 +69,7 @@ always @(posedge clk or negedge rst_n)begin
 			end
 			else begin				//没有溢出
 				e1 <= (e0 - E_ref);
-				f1 <= f0[F_bit*2+1:F_bit];			//保留F_bit*2+1-F_bit+1 用于规范化输出
+				f1 <= f0[F_bit*2+1:F_bit]+f0[F_bit-1];		//保留F_bit*2+1-F_bit+1 用于规范化输出
 			end
 		end
 		else begin					//指数下溢，无穷小
