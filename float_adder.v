@@ -96,28 +96,27 @@ always @(posedge clk or negedge rst_n) begin
 	end
 	else begin
 		add_s2 <= add_s1;
-		if(add_f1[2*`F_bit+1]) begin			//最高位为1尾数进位
-			if(add_e2 == E_max) begin		//溢出，特殊值Nan
+		if(add_e1 == E_max) begin		//溢出，特殊值Nan
 				add_f2 <= 1;
 				add_e2 <= {`E_bit{1'b1}};
-			end
-			else begin							//否则规范化并进位
+		end
+		else begin							//没有溢出
+			if(add_f1[2*`F_bit+1]) begin			//最高位为1尾数进位
 				add_f2 <= add_f1[2*`F_bit:`F_bit+1]+add_f1[`F_bit];
 				add_e2 <= add_e1+1'b1;
 			end
-		end
-		else begin
-			if(sub_eq1 == 1) begin			//正负相加等于0，特殊处理
-				add_s2 <= 0;
-				add_e2 <= 0;
-				add_f2 <= 0;
-			end
 			else begin
-				add_f2 <= sub_shift_f1[2*`F_bit-1:`F_bit]+sub_shift_f1[`F_bit-1];
-				add_e2 <= add_e1 - (sub_shift-1'b1);
+				if(sub_eq1 == 1) begin			//正负相加等于0，特殊处理
+					add_s2 <= 0;
+					add_e2 <= 0;
+					add_f2 <= 0;
+				end
+				else begin
+					add_f2 <= sub_shift_f1[2*`F_bit-1:`F_bit]+sub_shift_f1[`F_bit-1];
+					add_e2 <= add_e1 - (sub_shift-1'b1);
+				end
 			end
 		end
-		
 	end
 end
 
