@@ -39,25 +39,34 @@ always @(posedge clk or negedge rst_n) begin
 	if(!rst_n) begin					//复位流水线级各参数
 		a_s0 <= 0;
 		b_s0 <= 0;
-		add_e0 <= 0;
+		add_e0 <= `F_bit;
 		a_f0 <= 0;
 		b_f0 <= 0;
 	end
 	else begin
-		if((a_e < b_e)|| (a_e == b_e && a_f < b_f)) begin			
-		//b数大于a数，或者ab同阶，尾数a<b，在第一级流水线交换，以后流水线都按照a>=b运算
-			a_s0 <= b_s;				//ab符号交换
-			b_s0 <= a_s;				//ab符号交换
-			add_e0 <= b_e;				//取对齐后的阶数
-			a_f0 <= b_f;				//ab尾数交换
-			b_f0 <= a_f>>(b_e-a_e);	//a阶数小于b阶数，a数右移对阶
+		if(add_a == 0 && add_b == 0)begin
+			a_s0 <= 0;
+			b_s0 <= 0;
+			add_e0 <= `F_bit;
+			a_f0 <= 0;
+			b_f0 <= 0;
 		end
 		else begin
-			a_s0 <= a_s;			//a阶数大于b，b右移
-			b_s0 <= b_s;
-			add_e0 <= a_e;
-			a_f0 <= a_f;
-			b_f0 <= b_f>>(a_e-b_e);	//a数大于等于b数，b数右移对阶
+			if((a_e < b_e)|| (a_e == b_e && a_f < b_f)) begin			
+			//b数大于a数，或者ab同阶，尾数a<b，在第一级流水线交换，以后流水线都按照a>=b运算
+				a_s0 <= b_s;				//ab符号交换
+				b_s0 <= a_s;				//ab符号交换
+				add_e0 <= b_e;				//取对齐后的阶数
+				a_f0 <= b_f;				//ab尾数交换
+				b_f0 <= a_f>>(b_e-a_e);	//a阶数小于b阶数，a数右移对阶
+			end
+			else begin
+				a_s0 <= a_s;			//a阶数大于b，b右移
+				b_s0 <= b_s;
+				add_e0 <= a_e;
+				a_f0 <= a_f;
+				b_f0 <= b_f>>(a_e-b_e);	//a数大于等于b数，b数右移对阶
+			end
 		end
 	end
 end
@@ -66,7 +75,7 @@ end
 //LEVEL1: 尾数运算
 always @(posedge clk or negedge rst_n) begin
 	if(!rst_n) begin					//复位流水线级各参数
-		add_e1 <= 0;
+		add_e1 <= `F_bit;
 		add_f1 <= 0;
 		add_s1 <= 0;
 		sub_eq1 <= 0;
